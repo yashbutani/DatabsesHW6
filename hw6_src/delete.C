@@ -16,10 +16,73 @@ const Status QU_Delete(const string & relation,
 		       const Datatype type, 
 		       const char *attrValue)
 {
-// part 6
+	
+	Status status; 
+	RID outrid; 
+
+	HeapFileScan* hfs = new HeapFileScan(relation,status);
+
+	if(status != OK)
+	{
+		return status; 
+	}
+
+	AttrDesc record; 
+	attrCat->getInfo(relation,attrName,record); 
+	int length = record.attrLen;
+	int offset = record.attrOffset; 
+
+	// if(attrName == '\0')
+	// {
+	// 	status = hfs->startScan(0,0,STRING,NULL,EQ);
+	// 	if(status != OK)
+	// 	{
+	// 		delete hfs; 
+	// 		return status; 
+	// 	}
+	// }
+	// else
+	// {
+		if(type == STRING)
+		{
+			status = hfs->startScan(offset,length,type,attrValue,op); 
+			if(status != OK)
+			{
+				delete hfs; 
+				return status; 
+			}
+		}
+		else if (type == INTEGER)
+		{
+			int val = atoi(attrValue); 
+			status = hfs->startScan(offset,length,type,(char *)&val,op); 
+			if(status != OK)
+			{
+				delete hfs; 
+				return status; 
+			}
+		}
+		else //float 
+		{
+			int val = atoi(attrValue); 
+			status = hfs->startScan(offset,length,type,(char *)&val,op); 
+			if(status != OK)
+			{
+				delete hfs; 
+				return status; 
+			}
+		}
+	//}
+
+	while(hfs->scanNext(outrid) == OK)
+	{
+		hfs->deleteRecord();
+	}
+
+	hfs->endScan(); 
+	delete hfs; 
+
 return OK;
-
-
 
 }
 
