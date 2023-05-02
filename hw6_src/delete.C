@@ -1,7 +1,6 @@
 #include "catalog.h"
 #include "query.h"
 
-
 /*
  * Deletes records from a specified relation.
  *
@@ -43,6 +42,8 @@ const Status QU_Delete(const string & relation,
 	// }
 	// else
 	// {
+	int val;
+	float fval;
 		if(type == STRING)
 		{
 			status = hfs->startScan(offset,length,type,attrValue,op); 
@@ -54,7 +55,7 @@ const Status QU_Delete(const string & relation,
 		}
 		else if (type == INTEGER)
 		{
-			int val = atoi(attrValue); 
+			val = atoi(attrValue); 
 			status = hfs->startScan(offset,length,type,(char *)&val,op); 
 			if(status != OK)
 			{
@@ -64,7 +65,7 @@ const Status QU_Delete(const string & relation,
 		}
 		else //float 
 		{
-			int val = atoi(attrValue); 
+			fval = atoi(attrValue); 
 			status = hfs->startScan(offset,length,type,(char *)&val,op); 
 			if(status != OK)
 			{
@@ -72,7 +73,7 @@ const Status QU_Delete(const string & relation,
 				return status; 
 			}
 		}
-	//}
+
 
 	while(hfs->scanNext(outrid) == OK)
 	{
@@ -83,7 +84,6 @@ const Status QU_Delete(const string & relation,
 	delete hfs; 
 
 return OK;
-
 }
 
 
