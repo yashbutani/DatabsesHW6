@@ -65,7 +65,7 @@ const Status QU_Delete(const string & relation,
 		}
 		else //float 
 		{
-			fval = atoi(attrValue); 
+			fval = atof(attrValue); 
 			status = hfs->startScan(offset,length,type,(char *)&val,op); 
 			if(status != OK)
 			{
